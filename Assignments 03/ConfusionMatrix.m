@@ -6,8 +6,8 @@ arrayImagesTest: array of Images Test
 arrayLabelsTest: arrat of Labels Test
 %}
 function ConfusionMatrix(arrayImagesTrain,arrayLabelsTrain,arrayImagesTest,arrayLabelsTest)
-    %create model train
-    Mdl = fitcknn(arrayImagesTrain',arrayLabelsTrain);
+    %%create model train
+    Mdl = fitcknn(arrayImagesTrain',arrayLabelsTrain,'NumNeighbors',3);
     i = 1;
     arrLabelsUnique = unique(arrayLabelsTrain); %get Uniqe number
     dist(arrLabelsUnique);
@@ -19,9 +19,17 @@ function ConfusionMatrix(arrayImagesTrain,arrayLabelsTrain,arrayImagesTest,array
      end
 
     disp(nSummary);
-    i = 0;
-
-    while(i<length(arrayLabelsTest))
+ 
+    lblResult = predict(Mdl,arrayImagesTest'); 
+    nResult = (lblResult == arrayLabelsTest); 
+    nCount = sum(nResult); 
+    fprintf('\nSo luong mau dung: %d\n',nCount); 
+    for i =1 : lblResult
+        nSummary(2,arrayLabelsTest(i)+1) = nSummary(2,arrayLabelsTest(i)+1) + nResult(i)
+    end
+    disp(nSummary);
+    %{
+        while(i<length(arrayLabelsTest))
         i = i+1;
         imgTest = arrayImagesTest(:,i);
         lblTest = arrayLabelsTest(i);
@@ -32,4 +40,5 @@ function ConfusionMatrix(arrayImagesTrain,arrayLabelsTrain,arrayImagesTest,array
             disp(nSummary);
         end
     end
+    %}
 end
