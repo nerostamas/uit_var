@@ -1,0 +1,7 @@
+function [featuresData] = ExtractFeaturesHog(imgData)
+    img1D = imgData(:,1);
+    img2D = reshape(img1D,28,28);
+    featuresVector = extractHOGFeatures(img2D);
+    nSize = length(featuresVector);
+    
+end
